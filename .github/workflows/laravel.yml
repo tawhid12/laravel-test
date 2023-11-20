@@ -24,7 +24,6 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }}
-
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
@@ -40,6 +39,4 @@ jobs:
       - name: Execute Feature test via PHPUnit
         env:
           DB_PASSWORD: root
-        run: |
-          php artisan migrate
-          vendor/phpunit/phpunit/phpunit
+        run: vendor/bin/phpunit
