@@ -20,10 +20,20 @@ jobs:
         env:
           DB_USERNAME: root
           DB_PASSWORD: root
-          DB_DATABASE: forge
+          DB_DATABASE: mysql_testing
         run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USERNAME }} -p${{ env.DB_PASSWORD }}
+      - name: Set up MySQL
+        uses: mysqljs/mysql-action@v2
+        with:
+          mode: 'start'  # This starts the MySQL service
+        env:
+          MYSQL_ROOT_PASSWORD: root
+      
+      - name: Wait for MySQL to start
+        run: sleep 10
+        
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
@@ -33,6 +43,9 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
+      - name: Run Migrations
+        run: php artisan migrate --database=mysql
+  
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
