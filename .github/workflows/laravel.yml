@@ -16,12 +16,11 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: db_test
+          MYSQL_DATABASE: laravel_db
           MYSQL_USER: root
-          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_PASSWORD: root
         ports:
           - 3306:3306
-        # Set health checks to wait until mysql database has started (it takes some seconds to start)
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -57,7 +56,7 @@ jobs:
         DB_CONNECTION: mysql
         DB_HOST: localhost
         DB_PORT: 3306
-        DB_DATABASE: db_test
+        DB_DATABASE: laravel_db
         DB_USERNAME: root
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PASSWORD: root
       run: vendor/bin/phpunit
