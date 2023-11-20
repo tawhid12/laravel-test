@@ -40,4 +40,6 @@ jobs:
       - name: Execute Feature test via PHPUnit
         env:
           DB_PASSWORD: root
-        run: vendor/bin/phpunit
+        run: |
+          php artisan migrate
+          vendor/phpunit/phpunit/phpunit
